@@ -11,7 +11,9 @@ from .problem import OptimizationProblem
 # + [Test functions and datasets @ Virtual Library of Simulation Experiments](https://www.sfu.ca/~ssurjano/optimization.html)
 
 def __eggholder__(elem):
-    pass
+    (x1, x2) = elem
+
+    return -((x2+47)*sin(sqrt(abs(x2+x1/2+47)))) - (x1*sin(sqrt(abs(x1-(x2+47)))))
 
 def __sum_squares__(elem):
     (x,y) = elem
@@ -23,5 +25,6 @@ def __sum_squares__(elem):
     return suma
 
 SUM_SQUARES = OptimizationProblem(domains= ((-10,+10),)*2, objective=__sum_squares__)
+EGGHOLDER = OptimizationProblem(domains= ((-512, 512),)*2, objective=__eggholder__)
 
 #TODO: Eggholder y coloreo de grafos

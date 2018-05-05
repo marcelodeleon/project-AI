@@ -1,8 +1,9 @@
 from metaheuristics import *
 
 tests = [
-    hill_climbing.sum_squares,
-    random_restart_hill_climbing.sum_squares
+    hill_climbing.eggholder,
+    random_restart_hill_climbing.eggholder,
+
 ]
 
 for test in tests:

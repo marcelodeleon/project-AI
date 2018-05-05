@@ -28,5 +28,12 @@ def hill_climbing(problem, steps=100, delta=1, initial=None):
 def sum_squares():
     from .test_problems import SUM_SQUARES
     problem = SUM_SQUARES
-    finalStep = list(hill_climbing(problem, steps=10000))
+    finalStep = list(hill_climbing(problem, steps=10000))[-1]
+    print(finalStep)
+
+
+def eggholder():
+    from .test_problems import EGGHOLDER
+    problem = EGGHOLDER
+    finalStep = list(hill_climbing(problem, steps=10000))[-1]
     print(finalStep)
