@@ -51,16 +51,21 @@ def tabu_search(problem, steps=100, delta=1, initial=None, tabuSize=5):
             tabuList.pop(0)
         yield (best, problem.objective(best))
 
-
-def sum_squares():
+def sum_squares(initial=None):
     from .test_problems import SUM_SQUARES
     problem = SUM_SQUARES
-    finalStep = list(tabu_search(problem, steps=10000))[-1]
-    print(finalStep)
+    finalStep = list(tabu_search(problem, steps=10000, initial=initial))[-1]
+    return finalStep
 
 
-def eggholder():
+def eggholder(initial=None):
     from .test_problems import EGGHOLDER
     problem = EGGHOLDER
-    finalStep = list(tabu_search(problem, steps=10000))[-1]
-    print(finalStep)
+    finalStep = list(tabu_search(problem, steps=10000, initial=initial))[-1]
+    return finalStep
+    
+def graph_coloring(initial=None):
+    from .test_problems import GRAPHCOLORING
+    problem = GRAPHCOLORING
+    finalStep = list(tabu_search(problem, steps=10000, initial=initial))[-1]
+    return finalStep

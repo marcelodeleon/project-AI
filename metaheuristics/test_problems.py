@@ -2,7 +2,8 @@
 
 Test functions for benchmarking optimization techniques.
 """
-from math import sin, sqrt
+import random
+from math import sin, sqrt, inf
 from .problem import OptimizationProblem
 
 # References:
@@ -26,6 +27,30 @@ def __sum_squares__(elem):
 
     return suma
 
+adjs = []  
+    
+def __graph_coloring__(elem):
+    sameColor = 0
+    for adj in adjs:
+        if(elem[adj[0]] == elem[adj[1]]):
+            sameColor += 0.5
+            
+    return sameColor
+    
+
+MIN_GRAPH_COLOR = 0
+MAX_GRAPH_COLOR = 5
+GRAPH_SIZE = 20
+GRAPH_ADJ_PROB = 0.1
+
+for i in range(GRAPH_SIZE):
+    for j in range(GRAPH_SIZE):
+        if(i != j):
+            if(random.random() < GRAPH_ADJ_PROB):
+                adjs.append((i,j))
+                adjs.append((j,i))
+        
+
 SUM_SQUARES = OptimizationProblem(
     domains=((-10, +10),)*2,
     objective=__sum_squares__
@@ -36,4 +61,4 @@ EGGHOLDER = OptimizationProblem(
     objective=__eggholder__
 )
 
-# TODO: Coloreo de grafos
+GRAPHCOLORING = OptimizationProblem(domains= ((MIN_GRAPH_COLOR, MAX_GRAPH_COLOR),)*GRAPH_SIZE, objective=__graph_coloring__, target=-inf)

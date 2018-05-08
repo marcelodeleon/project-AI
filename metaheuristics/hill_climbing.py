@@ -25,15 +25,21 @@ def hill_climbing(problem, steps=100, delta=1, initial=None):
             break # local optimum has been reached
         yield current
 
-def sum_squares():
+def sum_squares(initial=None):
     from .test_problems import SUM_SQUARES
     problem = SUM_SQUARES
-    finalStep = list(hill_climbing(problem, steps=10000))[-1]
-    print(finalStep)
+    finalStep = list(hill_climbing(problem, steps=10000, initial=initial))[-1]
+    return finalStep
 
 
-def eggholder():
+def eggholder(initial=None):
     from .test_problems import EGGHOLDER
     problem = EGGHOLDER
-    finalStep = list(hill_climbing(problem, steps=10000))[-1]
-    print(finalStep)
+    finalStep = list(hill_climbing(problem, steps=10000, initial=initial))[-1]
+    return finalStep
+    
+def graph_coloring(initial=None):
+    from .test_problems import GRAPHCOLORING
+    problem = GRAPHCOLORING
+    finalStep = list(hill_climbing(problem, steps=10000, initial=initial))[-1]
+    return finalStep
