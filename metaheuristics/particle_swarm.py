@@ -6,10 +6,8 @@ C1 = 1.496180  # Cognitive acceleration.
 C2 = 1.496180  # Social acceleration.
 
 # Configuration constants.
-STEPS = 100
+STEPS = 10000
 SWARM_SIZE = 40
-
-# TODO: Remove useless prints.
 
 
 class Particle:
@@ -60,10 +58,8 @@ class Particle:
 
         R2 = random.random()
 
-        return tuple(map(
-            lambda x, y: C2 * R2 * (x - y),
-            zip(gBest['position'], self.position)
-        ))
+        return tuple(C2 * R2 * (x - y) for x, y in
+                     zip(gBest['position'], self.position))
 
     def _get_cognitive_term(self):
         """
@@ -72,27 +68,23 @@ class Particle:
 
         R1 = random.random()
 
-        return tuple(map(
-            lambda x, y: C1 * R1 * (x - y),
-            zip(self.best['position'], self.position)
-        ))
+        return tuple(C1 * R1 * (x - y) for x, y in
+                     zip(self.best['position'], self.position))
 
     def _get_inertia_term(self):
         """
         Get the inertia term from the particle velocity equation.
         """
 
-        return tuple(map(lambda x: W * x, self.velocity))
+        return tuple(W * x for x in self.velocity)
 
     def update_position(self):
         """
         Calculate the new position using the latest velocity vector.
         """
 
-        self.position = tuple(map(
-            lambda x, y: x + y,
-            zip(self.position, self.velocity)
-        ))
+        self.position = tuple(x + y for x, y in
+                              zip(self.position, self.velocity))
 
     def update_velocity(self, gBest):
         """
@@ -108,10 +100,8 @@ class Particle:
         social_term = self._get_social_term(gBest)
         cognitive_term = self._get_cognitive_term()
 
-        self.velocity = tuple(map(
-            lambda x, y, z: x + y + z,
-            zip(inertia_term, social_term, cognitive_term)
-        ))
+        self.velocity = tuple(x + y + z for x, y, z in
+                              zip(inertia_term, social_term, cognitive_term))
 
     def __repr__(self):
         return 'Position: {}\nFitness: {}'.format(self.position, self.fitness)
@@ -123,7 +113,9 @@ class Particle:
 
 
 class PSO:
-    def __init__(self, problem, steps=STEPS, swarm_size=SWARM_SIZE):
+    def __init__(self, problem, steps=STEPS, swarm_size=SWARM_SIZE,
+                 verbose=False):
+        self.verbose = verbose
         self.swarm = []
 
         # Number of particles in the swarm.
@@ -151,13 +143,14 @@ class PSO:
                 self.gBest['position'] = particle.position
                 self.gBest['fitness'] = particle.fitness
 
-        for p in self.swarm:
-            print(p)
+        if self.verbose:
+            for p in self.swarm:
+                print(p)
 
-        print('Global Best so far is {}, fitness: {}'.format(
-            self.gBest['position'],
-            self.gBest['fitness']
-        ))
+            print('Global Best so far is {}, fitness: {}'.format(
+                self.gBest['position'],
+                self.gBest['fitness']
+            ))
 
     def _current_better_than_personal_best(self, current_particle):
         """
@@ -185,8 +178,6 @@ class PSO:
         """PSO Main loop."""
 
         for i in range(self.steps):
-            print('Step', i)
-
             for p in range(self.swarm_size):
                 current_particle = self.swarm[p]
 
@@ -194,6 +185,11 @@ class PSO:
                 current_particle.update_velocity(self.gBest)
                 current_particle.update_position()
                 current_particle.satisfy_constraints()
+
+                # Update fitness for new position.
+                current_particle.fitnes = self.problem.objective(
+                    current_particle.position
+                )
 
                 # Update best['position'] for current particle.
                 if self._current_better_than_personal_best(current_particle):
@@ -206,21 +202,44 @@ class PSO:
                         self.gBest['position'] = current_particle.position
                         self.gBest['fitness'] = current_particle.fitness
 
+            if self.verbose:
+                print('Global best is {}, fitness is {}'.format(
+                    self.gBest['position'],
+                    self.gBest['fitness']
+                ))
 
-def sum_squares():
-    from .test_problems import SUM_SQUARES
-    problem = SUM_SQUARES
-    PSO(problem)
+        return self.gBest
 
-sum_squares()
+
+# def sum_squares():
+#     from .test_problems import SUM_SQUARES
+#     problem = SUM_SQUARES
+#     pso = PSO(problem)
+#     pso.optimize()
+
+# sum_squares()
 # def eggholder():
 #     from .test_problems import EGGHOLDER
 #     problem = EGGHOLDER
 #     finalStep = list(particle_swarm(problem, steps=10000))[-1]
 #     print(finalStep)
 
-# def graphcolor():
-#     from .test_problems import GRAPHCOLOR
-#     problem = GRAPHCOLOR
-#     finalStep = list(particle_swarm(problem, steps=10000))[-1]
-#     print(finalStep)
+def graphcolor_pso():
+    from .test_problems import GRAPHCOLORING
+    problem = GRAPHCOLORING
+    pso = PSO(problem)
+    solution = pso.optimize()
+
+    print(solution)
+
+
+def graphcolor_tabu():
+    from .test_problems import GRAPHCOLORING
+    from .tabu_search import tabu_search
+    problem = GRAPHCOLORING
+    finalStep = list(tabu_search(problem, steps=10000, initial=None))[-1]
+
+    print(finalStep)
+
+graphcolor_pso()
+# graphcolor_tabu()
