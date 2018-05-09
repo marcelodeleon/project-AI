@@ -35,9 +35,9 @@ class Particle:
         # Initialize position.
         self.position = initial if initial else problem.randomElement()
 
-        # Initialize velocity vector.
-        self.velocity = (random.uniform(-1, 1) for _ in
-                         range(0, len(self.position)))
+        # Initialize velocity vector with lower and upper bounds for each
+        # domain.
+        self.velocity = (random.uniform(lb, ub) for lb, ub in problem.domains)
 
         # Evaluate initial position's fitness.
         self.fitness = problem.objective(self.position)
