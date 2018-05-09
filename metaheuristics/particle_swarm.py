@@ -40,7 +40,7 @@ class Particle:
         self.velocity = (random.uniform(lb, ub) for lb, ub in problem.domains)
 
         # Evaluate initial position's fitness.
-        self.fitness = problem.objective(self.position)
+        self.fitness = problem.evaluate(self.position)
 
         # Initialize best.
         self.best['fitness'] = self.fitness
@@ -187,7 +187,7 @@ class PSO:
                 current_particle.satisfy_constraints()
 
                 # Update fitness for new position.
-                current_particle.fitnes = self.problem.objective(
+                current_particle.fitnes = self.problem.evaluate(
                     current_particle.position
                 )
 
