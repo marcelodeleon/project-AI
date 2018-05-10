@@ -12,7 +12,18 @@ SWARM_SIZE = 40
 
 class Particle:
     """
-    TODO: Write docstring
+    Representation of a Particle.
+
+    Parameters
+    ----------
+
+    problem: Object
+        Representation of the optimizatin problem.
+    initial: tuple
+        Initial particle position for the swarm.
+
+    Note: Initiating all particles in the same position did not return good
+    results.
     """
 
     def __init__(self, problem, initial=None):
@@ -93,7 +104,7 @@ class Particle:
         Parameters
         ----------
         gBest: tuple
-            best['position'] from the swarm so far.
+            Best position from the swarm so far.
         """
 
         inertia_term = self._get_inertia_term()
@@ -208,7 +219,8 @@ class PSO:
                     self.gBest['fitness']
                 ))
 
-        return self.gBest
+        return self.gBest['position'], self.gBest['fitness'], \
+            self.problem.evaluation_count
 
 
 # def sum_squares():

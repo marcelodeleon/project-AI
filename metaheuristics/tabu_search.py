@@ -18,7 +18,7 @@ def tabu_search(problem, steps=100, delta=1, initial=None, tabuSize=5):
     """ Tabu Search optimization implemented as a generator function."""
 
     current = initial or problem.randomElement()
-    lastEval = problem.objective(current)
+    lastEval = problem.evaluate(current)
     current = (current, lastEval)
 
     tabuList = []
@@ -35,21 +35,22 @@ def tabu_search(problem, steps=100, delta=1, initial=None, tabuSize=5):
         for candidate in neighborHood:
             if candidate not in tabuList and \
                     problem.compareEvaluations(
-                        problem.objective(bestCandidate),
-                        problem.objective(candidate)
+                        problem.evaluate(bestCandidate),
+                        problem.evaluate(candidate)
                     ) > 0:
                 bestCandidate = candidate
 
         if problem.compareEvaluations(
-            problem.objective(best),
-            problem.objective(bestCandidate)
+            problem.evaluate(best),
+            problem.evaluate(bestCandidate)
         ) > 0:
             best = bestCandidate
 
         tabuList.append(bestCandidate)
         if len(tabuList) > tabuSize:
             tabuList.pop(0)
-        yield (best, problem.objective(best))
+        yield (best, problem.evaluate(best), problem.evaluation_count)
+
 
 def sum_squares(initial=None):
     from .test_problems import SUM_SQUARES
@@ -63,7 +64,8 @@ def eggholder(initial=None):
     problem = EGGHOLDER
     finalStep = list(tabu_search(problem, steps=10000, initial=initial))[-1]
     return finalStep
-    
+
+
 def graph_coloring(initial=None):
     from .test_problems import GRAPHCOLORING
     problem = GRAPHCOLORING
