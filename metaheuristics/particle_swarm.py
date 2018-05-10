@@ -6,7 +6,7 @@ C1 = 1.496180  # Cognitive acceleration.
 C2 = 1.496180  # Social acceleration.
 
 # Configuration constants.
-STEPS = 10000
+STEPS = 1000
 SWARM_SIZE = 40
 
 
@@ -125,7 +125,7 @@ class Particle:
 
 class PSO:
     def __init__(self, problem, steps=STEPS, swarm_size=SWARM_SIZE,
-                 verbose=False):
+                 verbose=False, initial=None):
         self.verbose = verbose
         self.swarm = []
 
@@ -146,7 +146,7 @@ class PSO:
 
         # Initialize list with all particles (Swarm).
         for p in range(self.swarm_size):
-            particle = Particle(problem)
+            particle = Particle(problem, initial=initial)
             self.swarm.append(particle)
 
             # Update global best
@@ -236,22 +236,30 @@ class PSO:
 #     finalStep = list(particle_swarm(problem, steps=10000))[-1]
 #     print(finalStep)
 
-def graphcolor_pso():
-    from .test_problems import GRAPHCOLORING
-    problem = GRAPHCOLORING
-    pso = PSO(problem)
+def sum_squares(initial=None):
+    from .test_problems import SUM_SQUARES
+    problem = SUM_SQUARES
+    pso = PSO(problem, initial=initial)
     solution = pso.optimize()
 
-    print(solution)
+    return (solution['position'], solution['fitness'])
 
 
-def graphcolor_tabu():
+
+def eggholder(initial=None):
+    from .test_problems import EGGHOLDER
+    problem = EGGHOLDER
+    pso = PSO(problem, initial=initial)
+    solution = pso.optimize()
+
+    return (solution['position'], solution['fitness'])
+
+def graph_coloring(initial=None):
     from .test_problems import GRAPHCOLORING
-    from .tabu_search import tabu_search
     problem = GRAPHCOLORING
-    finalStep = list(tabu_search(problem, steps=10000, initial=None))[-1]
+    pso = PSO(problem, initial=initial)
+    solution = pso.optimize()
 
-    print(finalStep)
+    return (solution['position'], solution['fitness'])
 
-graphcolor_pso()
-# graphcolor_tabu()
+
