@@ -223,24 +223,12 @@ class PSO:
             self.problem.evaluation_count
 
 
-# def sum_squares():
-#     from .test_problems import SUM_SQUARES
-#     problem = SUM_SQUARES
-#     pso = PSO(problem)
-#     pso.optimize()
-
-# sum_squares()
-# def eggholder():
-#     from .test_problems import EGGHOLDER
-#     problem = EGGHOLDER
-#     finalStep = list(particle_swarm(problem, steps=10000))[-1]
-#     print(finalStep)
-
 def sum_squares(initial=None):
     from .test_problems import SUM_SQUARES
     problem = SUM_SQUARES
     pso = PSO(problem, initial=initial)
     return pso.optimize()
+
 
 def eggholder(initial=None):
     from .test_problems import EGGHOLDER
@@ -248,10 +236,9 @@ def eggholder(initial=None):
     pso = PSO(problem, initial=initial)
     return pso.optimize()
 
+
 def graph_coloring(initial=None):
     from .test_problems import GRAPHCOLORING
     problem = GRAPHCOLORING
     pso = PSO(problem, initial=initial)
     return pso.optimize()
-
-

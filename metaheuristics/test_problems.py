@@ -27,16 +27,17 @@ def __sum_squares__(elem):
 
     return suma
 
-adjs = []  
-    
+adjs = []
+
+
 def __graph_coloring__(elem):
     sameColor = 0
     for adj in adjs:
         if(elem[adj[0]] == elem[adj[1]]):
             sameColor += 0.5
-            
+
     return sameColor
-    
+
 
 MIN_GRAPH_COLOR = 0
 MAX_GRAPH_COLOR = 5
@@ -47,18 +48,22 @@ for i in range(GRAPH_SIZE):
     for j in range(GRAPH_SIZE):
         if(i != j):
             if(random.random() < GRAPH_ADJ_PROB):
-                adjs.append((i,j))
-                adjs.append((j,i))
-        
+                adjs.append((i, j))
+                adjs.append((j, i))
+
 
 SUM_SQUARES = OptimizationProblem(
-    domains=((-10, +10),)*2,
+    domains=((-10, +10),) * 2,
     objective=__sum_squares__
 )
 
 EGGHOLDER = OptimizationProblem(
-    domains=((-512, 512),)*2,
+    domains=((-512, 512),) * 2,
     objective=__eggholder__
 )
 
-GRAPHCOLORING = OptimizationProblem(domains= ((MIN_GRAPH_COLOR, MAX_GRAPH_COLOR),)*GRAPH_SIZE, objective=__graph_coloring__, target=-inf)
+GRAPHCOLORING = OptimizationProblem(
+    domains=((MIN_GRAPH_COLOR, MAX_GRAPH_COLOR),) * GRAPH_SIZE,
+    objective=__graph_coloring__,
+    target=-inf
+)
