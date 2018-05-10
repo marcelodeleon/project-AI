@@ -240,26 +240,18 @@ def sum_squares(initial=None):
     from .test_problems import SUM_SQUARES
     problem = SUM_SQUARES
     pso = PSO(problem, initial=initial)
-    solution = pso.optimize()
-
-    return (solution['position'], solution['fitness'])
-
-
+    return pso.optimize()
 
 def eggholder(initial=None):
     from .test_problems import EGGHOLDER
     problem = EGGHOLDER
     pso = PSO(problem, initial=initial)
-    solution = pso.optimize()
-
-    return (solution['position'], solution['fitness'])
+    return pso.optimize()
 
 def graph_coloring(initial=None):
     from .test_problems import GRAPHCOLORING
     problem = GRAPHCOLORING
     pso = PSO(problem, initial=initial)
-    solution = pso.optimize()
-
-    return (solution['position'], solution['fitness'])
+    return pso.optimize()
 
 

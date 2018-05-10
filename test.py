@@ -2,29 +2,24 @@ from metaheuristics import *
 
 TEST_TIMES = 50
     
-def calc_stats(meta1, meta2, problem, objective):
-    meta1_stats = []
-    meta2_stats = []
-
+def calc_stats(meta1, meta2):
+    print("{} {:>30} {:>30} {:>30}".format(meta1.__name__ + "_fitness", meta1.__name__ + "_evaluations", meta2.__name__ + "_fitness", meta2.__name__ + "_evaluations"))
     for i in range(TEST_TIMES):
-        meta1_stats.append(meta1())
-        meta2_stats.append(meta2())
-        
-    return (meta1_stats, meta2_stats)
-    
-def print_stats(stats):
-    print("particle_swarm \t tabu_search")
-    for x,y in zip(stats[0], stats[1]):
-        print(str(x).replace(".",",")+"\t"+str(y).replace(".",","))
+        print("{:>19} {:>30} {:>30} {:>30}".format(meta1()[1], meta1()[2], meta2()[1], meta2()[2]))
+
+def print_title(title):
+    print("-"*112)
+    print("{:^100}".format(title))
+    print("-"*112)
 
 #TEST SUM_SQUARES
-print("SUM_SQUARES")
-print_stats(calc_stats(particle_swarm.sum_squares, tabu_search.sum_squares, test_problems.SUM_SQUARES, 0))
+print_title("SUM_SQUARES")
+calc_stats(particle_swarm.sum_squares, tabu_search.sum_squares)
 
 #TEST EGGHOLDER
-print("EGGHOLDER")
-print_stats(calc_stats(particle_swarm.eggholder, tabu_search.eggholder, test_problems.EGGHOLDER, -959.6407))
+print_title("EGGHOLDER")
+calc_stats(particle_swarm.eggholder, tabu_search.eggholder)
 
 #TEST GRAPH COLORING
-print("GRAPH COLORING")
-print_stats(calc_stats(particle_swarm.graph_coloring, tabu_search.graph_coloring, test_problems.GRAPHCOLORING, 0))
+print_title("GRAPH COLORING")
+calc_stats(particle_swarm.graph_coloring, tabu_search.graph_coloring)
